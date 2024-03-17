@@ -1,0 +1,49 @@
+version: '3.4'
+
+services:
+  reviewservice:
+    image: ${DOCKER_REGISTRY-}reviewservice
+    build:
+      context: .
+      dockerfile: ReviewService/Dockerfile
+
+  userservice:
+    image: ${DOCKER_REGISTRY-}userservice
+    build:
+      context: .
+      dockerfile: UserService/Dockerfile
+
+
+  roomservice:
+    image: ${DOCKER_REGISTRY-}roomservice
+    build:
+      context: .
+      dockerfile: RoomService/Dockerfile
+  userdb:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: 'userdb'
+      POSTGRES_PASSWORD: 'userdb'
+      POSTGRES_DB: 'users'
+    volumes:
+      - /data/postgres/
+    ports:
+      - 5431:5432
+
+  roomdb:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: 'roomdb'
+      POSTGRES_PASSWORD: 'roomdb'
+      POSTGRES_DB: 'rooms'
+    volumes:
+      - /data/postgres/
+    ports:
+      - 5432:5432
+
+  apigateway:
+    image: ${DOCKER_REGISTRY-}apigateway
+    build:
+      context: .
+      dockerfile: APIGateway/Dockerfile
+

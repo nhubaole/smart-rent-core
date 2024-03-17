@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+option csharp_namespace = "RoomService";
+import "google/api/annotations.proto";
+package greet;
+
+service RoomService {
+
+  rpc Create (CreateRoomRequest) returns (RoomResponse){
+	  option(google.api.http) = {
+		  post: "/api/v1/rooms",
+		  body: "*"
+	  };
+  }
+
+  rpc GetAllRoom(Empty) returns (RoomListResponse){
+	  option(google.api.http) = {
+		  get: "/api/v1/rooms"
+	  };
+  }
+}
+message Empty{}
+
+enum Utility {
+    WC = 0;
+    WINDOW = 1;
+  }
+
+message CreateRoomRequest {
+  string room_type = 1;
+  int64 capacity = 2;
+  string gender = 3;
+  int64 price = 4;
+  int64 deposit = 5;
+  int64 electricity_cost = 6;
+  int64 water_cost = 7;
+  int64 internet_cost = 8;
+  bool has_parking = 9;
+  int64 parking_fee = 10;
+  string location = 11;
+  repeated Utility utilities = 12;
+  string title = 13;
+  string description = 14;
+}
+
+message RoomResponse {
+  message Result {
+    string id = 1;
+  }
+
+  string error_code = 1;
+  Result result = 2;
+}
+message Room {
+  string id = 1;
+  string title = 2;
+  float price = 3;
+  string location = 4;
+}
+
+message RoomListResponse {
+  message Result {
+    repeated Room rooms = 1;
+  }
+
+  string errorCode = 1;
+  Result result = 2;
+}
