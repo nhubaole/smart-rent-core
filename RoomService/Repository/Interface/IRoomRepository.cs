@@ -4,10 +4,10 @@ namespace RoomService.Repository.Interface
 {
     public interface IRoomRepository
     {
-        Task<Model.Room> Insert(CreateRoomRequest room);
-        Task<Model.Room> Update(CreateRoomRequest room);
-        Task<RoomResponse> Delete(int id);
-        Task<Model.Room> GetById(int id);
+        Task<string> Insert(CreateRoomReq room);
+        Task<string> Update(CreateRoomReq room, string id);
+        Task<string> Delete(string id);
+        Task<Model.Room> GetById(string id);
         Task<List<Model.Room>> GetAll();
     }
 }

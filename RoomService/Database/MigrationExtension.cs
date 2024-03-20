@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace RoomService.Data
+namespace RoomService.Database
 {
     public static class MigrationExtension
     {

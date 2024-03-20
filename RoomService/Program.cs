@@ -1,6 +1,6 @@
 using Google.Api;
 using Microsoft.EntityFrameworkCore;
-using RoomService.Data;
+using RoomService.Database;
 using RoomService.Repository.Impls;
 using RoomService.Repository.Interface;
 using RoomService.Services;
@@ -18,6 +18,7 @@ builder.Services.AddDbContext<RoomDbContext>(
 builder.Services.AddGrpc();
 builder.Services.AddGrpc().AddJsonTranscoding();
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
+builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 

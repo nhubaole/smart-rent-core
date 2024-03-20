@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 
 
-namespace RoomService.Data
+namespace RoomService.Database
 {
     public class RoomDbContext : DbContext
     {

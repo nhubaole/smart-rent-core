@@ -16,35 +16,72 @@ namespace RoomService.Services
             _roomRepository = roomRepository;
         }
 
-        public override Task<RoomResponse> Create(CreateRoomRequest request, ServerCallContext context)
+        public override Task<APIResponse> Create(CreateRoomReq request, ServerCallContext context)
         {
-            return Task.FromResult(new RoomResponse
+            try
             {
-                ErrorCode = "00",
-                Result = new RoomResponse.Types.Result { Id = "11" }
-            });
+                string test = "11";
+                var id = new CreateRoomRes { Id = "11" };
+                if (test == "1")
+                {
+                    return Task.FromResult(new APIResponse { StatusCode = 200, Error = new Error { Message = "err" } });
+                }
+                return Task.FromResult(new APIResponse
+                {
+                    StatusCode = 200,
+                    CreatedRoomId = new CreateRoomRes { Id = "11" }
+                });
+            }
+            catch (Exception ex)
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "Name is required."));
+            }
         }
-        public override async Task<RoomListResponse> GetAllRoom(Empty empty, ServerCallContext context)
+        public override async Task<APIResponse> GetAllRoom(Empty empty, ServerCallContext context)
         {
             var rooms = await _roomRepository.GetAll();
             var roomList = new RoomListResponse
             {
-                Result = new RoomListResponse.Types.Result()
+                //Rooms = new RoomListResponse.()
             };
             foreach (var room in rooms)
             {
-                roomList.Result.Rooms.Add(new Room
+                roomList.Rooms.Add(new Room
                 {
-                    Id = room.RoomId,
+                    //Id = room.RoomId.ToString(),
                     Title = room.Title,
                     Price = (float)room.Price,
                     Location = room.Location,
                 });
             }
-            return await Task.FromResult(new RoomListResponse
+            return await Task.FromResult(new APIResponse
             {
-                ErrorCode = "00",
-                Result = roomList.Result
+                StatusCode = 200,
+                Rooms = roomList
+            });
+
+        }
+        public override async Task<APIResponse> GetRoomById(GetByIdReq req, ServerCallContext context)
+        {
+            var room = await _roomRepository.GetById(req.Id);
+            var item = new GetByIdRes
+            {
+                Capacity = room.Capacity,
+                Price = (long)room.Price,
+                ElectricityCost = room.ElectricityCost,
+                InternetCost = room.InternetCost,
+                Deposit = room.Deposit,
+                Gender = room.Gender,
+                Location = room.Location,
+                RoomType = room.RoomType,
+                WaterCost = room.WaterCost,
+                Title = room.Title,
+                HasParking = room.HasParking
+            };
+            return await Task.FromResult(new APIResponse
+            {
+                StatusCode = 200,
+                Room = item
             });
         }
     }

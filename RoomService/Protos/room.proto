@@ -6,27 +6,60 @@ package greet;
 
 service RoomService {
 
-  rpc Create (CreateRoomRequest) returns (RoomResponse){
+  rpc Create (CreateRoomReq) returns (APIResponse){
 	  option(google.api.http) = {
 		  post: "/api/v1/rooms",
 		  body: "*"
 	  };
   }
 
-  rpc GetAllRoom(Empty) returns (RoomListResponse){
+  rpc GetAllRoom(Empty) returns (APIResponse){
 	  option(google.api.http) = {
 		  get: "/api/v1/rooms"
 	  };
   }
-}
-message Empty{}
-
-enum Utility {
-    WC = 0;
-    WINDOW = 1;
+  rpc GetRoomById(GetByIdReq) returns (APIResponse){
+	  option(google.api.http) = {
+		  get: "/api/v1/rooms/{id}"
+	  };
   }
+}
+// Get All
+message Empty{}
+message Room {
+  string id = 1;
+  string title = 2;
+  float price = 3;
+  string location = 4;
+}
+message RoomListResponse {
+    repeated Room rooms = 1;
+}
 
-message CreateRoomRequest {
+// Get By Id DTO
+message GetByIdReq{
+	string id = 1;
+}
+
+message GetByIdRes{
+	string room_type = 1;
+	int64 capacity = 2;
+	string gender = 3;
+	int64 price = 4;
+	int64 deposit = 5;
+	int64 electricity_cost = 6;
+	int64 water_cost = 7;
+	int64 internet_cost = 8;
+	bool has_parking = 9;
+	int64 parking_fee = 10;
+	string location = 11;
+	//repeated Utility utilities = 12;
+	string title = 13;
+
+}
+
+// Create Room DTO
+message CreateRoomReq {
   string room_type = 1;
   int64 capacity = 2;
   string gender = 3;
@@ -38,31 +71,32 @@ message CreateRoomRequest {
   bool has_parking = 9;
   int64 parking_fee = 10;
   string location = 11;
-  repeated Utility utilities = 12;
   string title = 13;
   string description = 14;
 }
-
-message RoomResponse {
-  message Result {
-    string id = 1;
-  }
-
-  string error_code = 1;
-  Result result = 2;
-}
-message Room {
-  string id = 1;
-  string title = 2;
-  float price = 3;
-  string location = 4;
+message CreateRoomRes {
+    string id = 2;
 }
 
-message RoomListResponse {
-  message Result {
-    repeated Room rooms = 1;
-  }
+ message Error{
+	 
+	 string message = 2;
 
-  string errorCode = 1;
-  Result result = 2;
+ }
+
+message Data{
+	oneof datas{
+		RoomListResponse room_list = 1;
+		GetByIdRes room = 2;
+		CreateRoomRes create_room = 3;
+	}
+}
+message APIResponse {
+	int32 status_code = 1;
+	oneof result {
+		Error error = 2;
+		CreateRoomRes created_room_id = 3;
+		GetByIdRes room = 4;
+		RoomListResponse rooms = 5;
+	}
 }
