@@ -35,9 +35,9 @@ namespace RoomService.Services
             {
                 roomList.Result.Rooms.Add(new Room
                 {
-                    Id = room.Id,
+                    Id = room.RoomId,
                     Title = room.Title,
-                    Price = room.Price,
+                    Price = (float)room.Price,
                     Location = room.Location,
                 });
             }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.EntityFrameworkCore;
-using RoomService.Model;
+
 
 namespace RoomService.Data
 {
@@ -11,8 +11,8 @@ namespace RoomService.Data
 
         }
 
-        public DbSet<Room> Rooms { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseNpgsql("User ID =roomdb;Password=roomdb;Server=localhost, 5432;Database=rooms; Integrated Security=true;");
+        public DbSet<Model.Room> Rooms { get; set; }
+        //protected override void OnConfiguring(DbContextOptionsBuilder options)
+        //    => options.UseNpgsql("User ID =roomdb;Password=roomdb;Server=localhost; Port=5432;Database=rooms;");
     }
 }

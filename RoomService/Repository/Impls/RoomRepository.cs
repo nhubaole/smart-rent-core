@@ -12,7 +12,7 @@ namespace RoomService.Repository.Impls
             _roomDbContext = roomDbContext;
         }
 
-        public async Task<List<Room>> GetAll()
+        public async Task<List<Model.Room>> GetAll()
         {
             try
             {
@@ -25,24 +25,25 @@ namespace RoomService.Repository.Impls
             }
         }
 
+        public Task<Model.Room> GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Model.Room> Insert(CreateRoomRequest room)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Model.Room> Update(CreateRoomRequest room)
+        {
+            throw new NotImplementedException();
+        }
+
         Task<RoomResponse> IRoomRepository.Delete(int id)
         {
             throw new NotImplementedException();
         }
 
-        Task<Room> IRoomRepository.GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<Room> IRoomRepository.Insert(CreateRoomRequest room)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<Room> IRoomRepository.Update(CreateRoomRequest room)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

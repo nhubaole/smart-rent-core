@@ -18,9 +18,14 @@ services:
     image: ${DOCKER_REGISTRY-}roomservice
     build:
       context: .
-      dockerfile: RoomService/Dockerfile
+      dockerfile: RoomService/Dockerfile    
+    environment:
+        ConnectionStrings_DefaultConnection: "Host=roomdb;User ID =roomdb;Password=roomdb; Port=5432;Database=rooms;"
+    depends_on:
+        - roomdb
   userdb:
     image: postgres:latest
+    container_name: userdb
     environment:
       POSTGRES_USER: 'userdb'
       POSTGRES_PASSWORD: 'userdb'
@@ -32,12 +37,13 @@ services:
 
   roomdb:
     image: postgres:latest
+    container_name: roomdb
     environment:
       POSTGRES_USER: 'roomdb'
       POSTGRES_PASSWORD: 'roomdb'
       POSTGRES_DB: 'rooms'
     volumes:
-      - /data/postgres/
+      - postgres-room-db:/var/lib/postgresql/roomdata
     ports:
       - 5432:5432
 
@@ -46,4 +52,6 @@ services:
     build:
       context: .
       dockerfile: APIGateway/Dockerfile
+volumes:
+  postgres-room-db:
 
