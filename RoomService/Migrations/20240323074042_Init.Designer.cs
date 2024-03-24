@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RoomService.Database;
@@ -11,9 +12,11 @@ using RoomService.Database;
 namespace RoomService.Migrations
 {
     [DbContext(typeof(RoomDbContext))]
-    partial class RoomDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240323074042_Init")]
+    partial class Init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,6 +47,7 @@ namespace RoomService.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("DeleteTime")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("Deposit")
@@ -64,6 +68,7 @@ namespace RoomService.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("Image")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("InternetCost")
@@ -76,13 +81,17 @@ namespace RoomService.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("ParkingFee")
+                    b.Property<int>("ParkingFee")
                         .HasColumnType("integer");
 
                     b.Property<int>("Price")
                         .HasColumnType("integer");
 
                     b.Property<string>("RoomType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -94,6 +103,7 @@ namespace RoomService.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Utilities")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("WaterCost")

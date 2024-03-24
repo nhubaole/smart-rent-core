@@ -1,12 +1,13 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace RoomService.Migrations
 {
     /// <inheritdoc />
-    public partial class InitDB : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,14 +16,15 @@ namespace RoomService.Migrations
                 name: "Room",
                 columns: table => new
                 {
-                    RoomId = table.Column<string>(type: "text", nullable: false),
+                    RoomId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Title = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     RoomType = table.Column<string>(type: "text", nullable: false),
                     Capacity = table.Column<int>(type: "integer", nullable: false),
                     Gender = table.Column<string>(type: "text", nullable: false),
                     Area = table.Column<double>(type: "double precision", nullable: false),
-                    Price = table.Column<double>(type: "double precision", nullable: false),
+                    Price = table.Column<int>(type: "integer", nullable: false),
                     Deposit = table.Column<int>(type: "integer", nullable: false),
                     ElectricityCost = table.Column<int>(type: "integer", nullable: false),
                     WaterCost = table.Column<int>(type: "integer", nullable: false),

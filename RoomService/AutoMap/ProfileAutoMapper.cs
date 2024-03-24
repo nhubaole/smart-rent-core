@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 
-namespace RoomService.DTO
+namespace RoomService.AutoMap
+
 {
     public class ProfileAutoMapper : Profile
     {

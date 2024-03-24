@@ -42,8 +42,9 @@ services:
       POSTGRES_USER: 'roomdb'
       POSTGRES_PASSWORD: 'roomdb'
       POSTGRES_DB: 'rooms'
+      PGDATA: /tmp
     volumes:
-      - postgres-room-db:/var/lib/postgresql/roomdata
+      - postgres-room-db:/var/lib/postgresql/data/
     ports:
       - 5432:5432
 

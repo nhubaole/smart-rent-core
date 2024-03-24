@@ -27,7 +27,7 @@ service RoomService {
 // Get All
 message Empty{}
 message Room {
-  string id = 1;
+  int64 id = 1;
   string title = 2;
   float price = 3;
   string location = 4;
@@ -38,20 +38,20 @@ message RoomListResponse {
 
 // Get By Id DTO
 message GetByIdReq{
-	string id = 1;
+	int32 id = 1;
 }
 
 message GetByIdRes{
 	string room_type = 1;
-	int64 capacity = 2;
+	int32 capacity = 2;
 	string gender = 3;
-	int64 price = 4;
-	int64 deposit = 5;
-	int64 electricity_cost = 6;
-	int64 water_cost = 7;
-	int64 internet_cost = 8;
+	int32 price = 4;
+	int32 deposit = 5;
+	int32 electricity_cost = 6;
+	int32 water_cost = 7;
+	int32 internet_cost = 8;
 	bool has_parking = 9;
-	int64 parking_fee = 10;
+	int32 parking_fee = 10;
 	string location = 11;
 	//repeated Utility utilities = 12;
 	string title = 13;
@@ -61,21 +61,23 @@ message GetByIdRes{
 // Create Room DTO
 message CreateRoomReq {
   string room_type = 1;
-  int64 capacity = 2;
+  int32 capacity = 2;
   string gender = 3;
-  int64 price = 4;
-  int64 deposit = 5;
-  int64 electricity_cost = 6;
-  int64 water_cost = 7;
-  int64 internet_cost = 8;
+  int32 price = 4;
+  int32 deposit = 5;
+  int32 electricity_cost = 6;
+  int32 water_cost = 7;
+  int32 internet_cost = 8;
   bool has_parking = 9;
-  int64 parking_fee = 10;
+  int32 parking_fee = 10;
   string location = 11;
   string title = 13;
   string description = 14;
+  string utilities = 15;
+  string created_by = 16;
 }
 message CreateRoomRes {
-    string id = 2;
+    int32 id = 2;
 }
 
  message Error{

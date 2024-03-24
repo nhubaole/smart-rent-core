@@ -20,16 +20,12 @@ namespace RoomService.Services
         {
             try
             {
-                string test = "11";
-                var id = new CreateRoomRes { Id = "11" };
-                if (test == "1")
-                {
-                    return Task.FromResult(new APIResponse { StatusCode = 200, Error = new Error { Message = "err" } });
-                }
+                var room = _roomRepository.Insert(request);
+
                 return Task.FromResult(new APIResponse
                 {
                     StatusCode = 200,
-                    CreatedRoomId = new CreateRoomRes { Id = "11" }
+                    CreatedRoomId = new CreateRoomRes { Id = room.Id }
                 });
             }
             catch (Exception ex)
@@ -48,7 +44,7 @@ namespace RoomService.Services
             {
                 roomList.Rooms.Add(new Room
                 {
-                    //Id = room.RoomId.ToString(),
+                    Id = room.RoomId,
                     Title = room.Title,
                     Price = (float)room.Price,
                     Location = room.Location,
@@ -67,7 +63,7 @@ namespace RoomService.Services
             var item = new GetByIdRes
             {
                 Capacity = room.Capacity,
-                Price = (long)room.Price,
+                Price = room.Price,
                 ElectricityCost = room.ElectricityCost,
                 InternetCost = room.InternetCost,
                 Deposit = room.Deposit,

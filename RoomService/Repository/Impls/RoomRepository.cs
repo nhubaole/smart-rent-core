@@ -28,7 +28,7 @@ namespace RoomService.Repository.Impls
             }
         }
 
-        public async Task<Model.Room> GetById(string id)
+        public async Task<Model.Room> GetById(int id)
         {
             try
             {
@@ -38,6 +38,7 @@ namespace RoomService.Repository.Impls
                     throw new Exception("Room not found");
                 }
                 return room;
+
             }
             catch (Exception ex)
             {
@@ -47,18 +48,25 @@ namespace RoomService.Repository.Impls
 
         public async Task<string> Insert(CreateRoomReq room)
         {
-            var roomInsert = _mapper.Map<Model.Room>(room);
-            _roomDbContext.Rooms.Add(roomInsert);
-            await _roomDbContext.SaveChangesAsync();
-            return roomInsert.RoomId;
+            try
+            {
+                var roomInsert = _mapper.Map<Model.Room>(room);
+                var insertedRoom = _roomDbContext.Rooms.Add(roomInsert);
+                await _roomDbContext.SaveChangesAsync();
+                return insertedRoom.Entity.RoomId.ToString();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
         }
 
-        public Task<string> Update(CreateRoomReq room, string id)
+        public Task<string> Update(CreateRoomReq room, int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<string> Delete(string id)
+        public Task<string> Delete(int id)
         {
             throw new NotImplementedException();
         }
