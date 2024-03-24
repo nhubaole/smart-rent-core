@@ -1,3 +1,4 @@
+using Calzolari.Grpc.AspNetCore.FluentValidation;
 using Google.Api;
 using Microsoft.EntityFrameworkCore;
 using RoomService.Database;
@@ -7,19 +8,23 @@ using RoomService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<RoomDbContext>(
-    opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("RoomDatabase")));
-//builder.Services.AddDbContext<RoomDbContext>();
+
+//builder.Services.AddTransient<RoomDbContext>();
 
 // Additional configuration is required to successfully run gRPC on macOS.
 // For instructions on how to configure Kestrel and gRPC clients on macOS, visit https://go.microsoft.com/fwlink/?linkid=2099682
 
 // Add services to the container.
-builder.Services.AddGrpc();
+builder.Services.AddGrpc(options => options.EnableMessageValidation());
+builder.Services.AddGrpcValidation();
+builder.Services.AddValidator<RoomValidator>();
 builder.Services.AddGrpc().AddJsonTranscoding();
-builder.Services.AddScoped<IRoomRepository, RoomRepository>();
-builder.Services.AddAutoMapper(typeof(Program));
 
+builder.Services.AddScoped<IRoomRepository, RoomRepository>();
+
+builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddDbContext<RoomDbContext>(
+    opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("RoomDatabase")));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

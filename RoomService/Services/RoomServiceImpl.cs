@@ -1,7 +1,9 @@
+using AutoMapper;
 using Google.Protobuf.Collections;
 using Grpc.Core;
 using Microsoft.AspNetCore.Mvc;
 using RoomService;
+using RoomService.Model;
 using RoomService.Repository.Interface;
 
 namespace RoomService.Services
@@ -10,36 +12,29 @@ namespace RoomService.Services
     {
         private readonly ILogger<RoomServiceImpl> _logger;
         private readonly IRoomRepository _roomRepository;
-        public RoomServiceImpl(ILogger<RoomServiceImpl> logger, IRoomRepository roomRepository)
+        private readonly IMapper _mapper;
+        public RoomServiceImpl(ILogger<RoomServiceImpl> logger, IRoomRepository roomRepository, IMapper mapper)
         {
             _logger = logger;
             _roomRepository = roomRepository;
+            _mapper = mapper;
         }
 
-        public override Task<APIResponse> Create(CreateRoomReq request, ServerCallContext context)
+        public override async Task<APIResponse> Create(CreateRoomReq request, ServerCallContext context)
         {
-            try
-            {
-                var room = _roomRepository.Insert(request);
+            var room = await _roomRepository.Insert(request);
 
-                return Task.FromResult(new APIResponse
-                {
-                    StatusCode = 200,
-                    CreatedRoomId = new CreateRoomRes { Id = room.Id }
-                });
-            }
-            catch (Exception ex)
+            return await Task.FromResult(new APIResponse
             {
-                throw new RpcException(new Status(StatusCode.InvalidArgument, "Name is required."));
-            }
+                StatusCode = 200,
+                CreatedRoomId = new CreateRoomRes { Id = room.RoomId }
+            });
+
         }
         public override async Task<APIResponse> GetAllRoom(Empty empty, ServerCallContext context)
         {
             var rooms = await _roomRepository.GetAll();
-            var roomList = new RoomListResponse
-            {
-                //Rooms = new RoomListResponse.()
-            };
+            var roomList = new RoomListResponse();
             foreach (var room in rooms)
             {
                 roomList.Rooms.Add(new Room
@@ -60,25 +55,34 @@ namespace RoomService.Services
         public override async Task<APIResponse> GetRoomById(GetByIdReq req, ServerCallContext context)
         {
             var room = await _roomRepository.GetById(req.Id);
-            var item = new GetByIdRes
-            {
-                Capacity = room.Capacity,
-                Price = room.Price,
-                ElectricityCost = room.ElectricityCost,
-                InternetCost = room.InternetCost,
-                Deposit = room.Deposit,
-                Gender = room.Gender,
-                Location = room.Location,
-                RoomType = room.RoomType,
-                WaterCost = room.WaterCost,
-                Title = room.Title,
-                HasParking = room.HasParking
-            };
+            var item = _mapper.Map<GetByIdRes>(room);
             return await Task.FromResult(new APIResponse
             {
                 StatusCode = 200,
                 Room = item
             });
         }
+        public override async Task<APIResponse> Update(UpdateRoomReq request, ServerCallContext context)
+        {
+
+            var roomUpdate = await _roomRepository.Update(request.UpdateRoom, request.UpdateRoomId);
+            return await Task.FromResult(new APIResponse
+            {
+                StatusCode = 200,
+                CreatedRoomId = new CreateRoomRes { Id = roomUpdate.RoomId }
+            });
+        }
+
+        public override async Task<APIResponse> Delete(DeleteRoomReq request, ServerCallContext context)
+        {
+
+            var roomDelete = await _roomRepository.Delete(request.RoomId);
+            return await Task.FromResult(new APIResponse
+            {
+                StatusCode = 200,
+                CreatedRoomId = new CreateRoomRes { Id = roomDelete.RoomId }
+            });
+        }
+
     }
 }

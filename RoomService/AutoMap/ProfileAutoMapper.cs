@@ -8,6 +8,7 @@ namespace RoomService.AutoMap
         public ProfileAutoMapper()
         {
             CreateMap<Model.Room, CreateRoomReq>().ReverseMap();
+            CreateMap<Model.Room, GetByIdRes>().ReverseMap();
         }
     }
 }

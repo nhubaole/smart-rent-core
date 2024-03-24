@@ -23,6 +23,17 @@ service RoomService {
 		  get: "/api/v1/rooms/{id}"
 	  };
   }
+  rpc Update(UpdateRoomReq) returns(APIResponse){
+	  option(google.api.http) = {
+		  put: "/api/v1/rooms/{update_room_id}",
+		  body: "update_room"
+	  };
+  }
+  rpc Delete(DeleteRoomReq) returns(APIResponse){
+	  option(google.api.http) = {
+		  delete: "/api/v1/rooms/{room_id}",
+	  };
+  }
 }
 // Get All
 message Empty{}
@@ -34,6 +45,17 @@ message Room {
 }
 message RoomListResponse {
     repeated Room rooms = 1;
+}
+
+//Update Room
+message UpdateRoomReq{
+	int32 update_room_id = 1;
+	CreateRoomReq update_room = 2;
+}
+
+//Delete Room
+message DeleteRoomReq{
+	int32 room_id = 1;
 }
 
 // Get By Id DTO
@@ -75,6 +97,7 @@ message CreateRoomReq {
   string description = 14;
   string utilities = 15;
   string created_by = 16;
+  int32 area = 17;
 }
 message CreateRoomRes {
     int32 id = 2;
@@ -86,13 +109,7 @@ message CreateRoomRes {
 
  }
 
-message Data{
-	oneof datas{
-		RoomListResponse room_list = 1;
-		GetByIdRes room = 2;
-		CreateRoomRes create_room = 3;
-	}
-}
+
 message APIResponse {
 	int32 status_code = 1;
 	oneof result {
@@ -100,5 +117,6 @@ message APIResponse {
 		CreateRoomRes created_room_id = 3;
 		GetByIdRes room = 4;
 		RoomListResponse rooms = 5;
+
 	}
 }

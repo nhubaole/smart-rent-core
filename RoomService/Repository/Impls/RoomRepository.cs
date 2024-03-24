@@ -1,7 +1,13 @@
 ﻿using AutoMapper;
+using Google.Api;
+using Grpc.Core;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RoomService.Database;
+using RoomService.Model;
 using RoomService.Repository.Interface;
+using System.Web.Mvc;
+using static Grpc.Core.Metadata;
 
 namespace RoomService.Repository.Impls
 {
@@ -35,25 +41,25 @@ namespace RoomService.Repository.Impls
                 var room = await _roomDbContext.Rooms.FirstOrDefaultAsync(x => x.RoomId == id);
                 if (room == null)
                 {
-                    throw new Exception("Room not found");
+                    throw new RpcException(new Status(StatusCode.NotFound, $"Room {id} not found"));
                 }
                 return room;
 
             }
-            catch (Exception ex)
+            catch (RpcException ex)
             {
-                throw new Exception(ex.Message, ex);
+                throw ex;
             }
         }
 
-        public async Task<string> Insert(CreateRoomReq room)
+        public async Task<Model.Room> Insert(CreateRoomReq room)
         {
             try
             {
                 var roomInsert = _mapper.Map<Model.Room>(room);
-                var insertedRoom = _roomDbContext.Rooms.Add(roomInsert);
+                _roomDbContext.Rooms.Add(roomInsert);
                 await _roomDbContext.SaveChangesAsync();
-                return insertedRoom.Entity.RoomId.ToString();
+                return roomInsert;
             }
             catch (Exception ex)
             {
@@ -61,14 +67,44 @@ namespace RoomService.Repository.Impls
             }
         }
 
-        public Task<string> Update(CreateRoomReq room, int id)
+        public async Task<Model.Room> Update(CreateRoomReq room, int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var updateRoom = await _roomDbContext.Rooms.FirstOrDefaultAsync(x => x.RoomId == id);
+                if (updateRoom == null)
+                {
+                    throw new RpcException(new Status(StatusCode.NotFound, $"Room {id} not found"));
+                }
+
+                _mapper.Map(room, updateRoom);
+                await _roomDbContext.SaveChangesAsync();
+                return updateRoom;
+
+            }
+            catch (RpcException ex)
+            {
+                throw ex;
+            }
         }
 
-        public Task<string> Delete(int id)
+        public async Task<Model.Room> Delete(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var deleteRoom = await _roomDbContext.Rooms.FirstOrDefaultAsync(x => x.RoomId == id);
+                if (deleteRoom == null)
+                {
+                    throw new RpcException(new Status(StatusCode.NotFound, $"Room {id} not found"));
+                }
+                _roomDbContext.Rooms.Remove(deleteRoom);
+                await _roomDbContext.SaveChangesAsync();
+                return deleteRoom;
+            }
+            catch (RpcException ex)
+            {
+                throw ex;
+            }
         }
 
     }

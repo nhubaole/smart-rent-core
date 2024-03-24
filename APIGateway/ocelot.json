@@ -10,7 +10,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api-gateway/v1/rooms/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post" ]
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
     },
     {
       "DownstreamPathTemplate": "/api/v1/users",
