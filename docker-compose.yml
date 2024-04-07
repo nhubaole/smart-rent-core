@@ -50,7 +50,14 @@ services:
     build:
       context: .
       dockerfile: APIGateway/Dockerfile
+  accountservice:
+    image: ${DOCKER_REGISTRY-}accountservice
+    build:
+      context: .
+      dockerfile: AccountService/Dockerfile
+
 volumes:
   postgresdb:
+
 
 
