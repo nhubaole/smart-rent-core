@@ -3,25 +3,47 @@ syntax = "proto3";
 option csharp_namespace = "UserService";
 
 import "google/api/annotations.proto";
-package greet;
+package UserService;
 
-// The greeting service definition.
 service UserService {
   // Sends a greeting
-  rpc SayHello (HelloRequest) returns (HelloReply){
+  rpc Create (CreateUpdateUserReq) returns (CreateUpdateUserRes){
 	  option(google.api.http) = {
 		  post: "/api/v1/users",
 		  body: "*"
 	  };
   }
+  //rpc Login() returns ()
 }
 
 // The request message containing the user's name.
-message HelloRequest {
-  string name = 1;
+message CreateUpdateUserReq {
+  int32 user_id = 1;
+
+  string user_name = 2;
+
+  string fullname = 3;
+
+  string email = 4;
+
+  string phone_number = 5;
+
+  //string avatar = 6;
+
+  //google.protobuf.Timestamp dob = 7;
+
+  string gender = 8;
+
+  //string bank_number = 9;
+
+  //string bank_name = 10;
+
+  //google.protobuf.Timestamp created_at = 11;
+
+  //string delete_time = 12;
 }
 
 // The response message containing the greetings.
-message HelloReply {
-  string message = 1;
+message CreateUpdateUserRes {
+  int32 user_id = 1;
 }

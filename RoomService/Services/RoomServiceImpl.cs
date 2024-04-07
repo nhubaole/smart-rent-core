@@ -1,6 +1,7 @@
 using AutoMapper;
 using Google.Protobuf.Collections;
 using Grpc.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RoomService;
 using RoomService.Model;

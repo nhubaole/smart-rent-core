@@ -34,7 +34,17 @@ service RoomService {
 		  delete: "/api/v1/rooms/{room_id}",
 	  };
   }
+  rpc Like(LikeRoomreq) returns(APIResponse){
+	  option(google.api.http) = {
+		  post: "/api/v1/rooms/like/{room_id}",
+	  };
+  }
 }
+// Like room
+message LikeRoomreq{
+	int32 room_id = 1;
+}
+
 // Get All
 message Empty{}
 message Room {

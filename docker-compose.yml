@@ -30,8 +30,6 @@ services:
       POSTGRES_USER: 'userdb'
       POSTGRES_PASSWORD: 'userdb'
       POSTGRES_DB: 'users'
-    volumes:
-      - /data/postgres/
     ports:
       - 5431:5432
 
@@ -42,9 +40,8 @@ services:
       POSTGRES_USER: 'roomdb'
       POSTGRES_PASSWORD: 'roomdb'
       POSTGRES_DB: 'rooms'
-      PGDATA: /tmp
     volumes:
-      - postgres-room-db:/var/lib/postgresql/data/
+      - postgresdb:/var/lib/postgresql/data/
     ports:
       - 5432:5432
 
@@ -54,6 +51,6 @@ services:
       context: .
       dockerfile: APIGateway/Dockerfile
 volumes:
-  postgres-room-db:
+  postgresdb:
 
 
