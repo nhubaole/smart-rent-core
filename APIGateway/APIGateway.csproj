@@ -14,8 +14,4 @@
     <PackageReference Include="Ocelot" Version="23.1.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\JwtAuthenticationManager\JwtAuthenticationManager.csproj" />
-  </ItemGroup>
-
 </Project>
