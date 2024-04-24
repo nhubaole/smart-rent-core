@@ -1,6 +1,7 @@
 using Calzolari.Grpc.AspNetCore.FluentValidation;
-using Google.Api;
 using Microsoft.EntityFrameworkCore;
+using RabbitMQHandler.Services.Impls;
+using RabbitMQHandler.Services.Interfaces;
 using RoomService.Database;
 using RoomService.Repository.Impls;
 using RoomService.Repository.Interface;
@@ -19,6 +20,8 @@ builder.Services.AddGrpc(options => options.EnableMessageValidation());
 builder.Services.AddGrpcValidation();
 builder.Services.AddValidator<RoomValidator>();
 builder.Services.AddGrpc().AddJsonTranscoding();
+builder.Services.AddScoped<IMessageProducer, MessageProducer>();
+builder.Services.AddScoped<IMessageConsumer, MessageConsumer>();
 
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 
