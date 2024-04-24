@@ -26,7 +26,7 @@
       "publishAllPorts": true,
       "useSSL": true,
       "httpPort": 3000,
-      "sslPort": 3001
+      "sslPort": 3002
     }
   },
   "iisSettings": {

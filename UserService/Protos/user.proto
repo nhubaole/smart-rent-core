@@ -6,44 +6,58 @@ import "google/api/annotations.proto";
 package UserService;
 
 service UserService {
-  // Sends a greeting
-  rpc Create (CreateUpdateUserReq) returns (CreateUpdateUserRes){
+  rpc GetUserById (GetUserByIdReq) returns (APIResponse){
 	  option(google.api.http) = {
-		  post: "/api/v1/users",
-		  body: "*"
+		  get: "/api/v1/users/{id}",
 	  };
   }
-  //rpc Login() returns ()
+
+  rpc UpdateUserInfo (UpdateUserInfoReq) returns (APIResponse){
+	  option(google.api.http) = {
+		  put: "/api/v1/users/{id}",
+		  body: "update_user"
+	  };
+  }
 }
 
-// The request message containing the user's name.
-message CreateUpdateUserReq {
-  int32 user_id = 1;
-
-  string user_name = 2;
-
-  string fullname = 3;
-
-  string email = 4;
-
-  string phone_number = 5;
-
-  //string avatar = 6;
-
-  //google.protobuf.Timestamp dob = 7;
-
-  string gender = 8;
-
-  //string bank_number = 9;
-
-  //string bank_name = 10;
-
-  //google.protobuf.Timestamp created_at = 11;
-
-  //string delete_time = 12;
+message GetUserByIdRes{
+	string user_name = 1;
+	string full_name = 2;
+	string email = 3;
+	string avatar = 4;
+	string dob = 5;
 }
 
-// The response message containing the greetings.
-message CreateUpdateUserRes {
-  int32 user_id = 1;
+message GetUserByIdReq {
+  int32 id = 1;
+}
+
+message UpdateUserInfoReq {
+	int32 id = 1;
+	UpdateUser update_user = 2;
+}
+
+message UpdateUserInfoRes {
+	int32 user_id = 1;
+}
+
+message UpdateUser {
+	string full_name = 1;
+	string email = 2;
+	string bank_number = 3;
+	string bank_name = 4;
+}
+
+ message Error{
+	 string message = 1;
+ }
+
+
+message APIResponse {
+	int32 status_code = 1;
+	oneof result {
+		Error error = 2;
+		GetUserByIdRes user_info = 3;
+		UpdateUserInfoRes user_id = 4;
+	}
 }
