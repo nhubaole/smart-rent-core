@@ -1,10 +1,6 @@
 using AutoMapper;
-using Google.Protobuf.Collections;
 using Grpc.Core;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using RoomService;
-using RoomService.Model;
+using RabbitMQHandler.Services.Interfaces;
 using RoomService.Repository.Interface;
 
 namespace RoomService.Services
@@ -14,16 +10,21 @@ namespace RoomService.Services
         private readonly ILogger<RoomServiceImpl> _logger;
         private readonly IRoomRepository _roomRepository;
         private readonly IMapper _mapper;
-        public RoomServiceImpl(ILogger<RoomServiceImpl> logger, IRoomRepository roomRepository, IMapper mapper)
+        private readonly IMessageConsumer _messageConsumer;
+        public RoomServiceImpl(ILogger<RoomServiceImpl> logger, IRoomRepository roomRepository, IMapper mapper, IMessageConsumer message)
         {
             _logger = logger;
             _roomRepository = roomRepository;
             _mapper = mapper;
+            _messageConsumer = message;
         }
 
         public override async Task<APIResponse> Create(CreateRoomReq request, ServerCallContext context)
         {
+            //var message = _messageConsumer.ReceiveMessage("GetCurrentUser");
             var room = await _roomRepository.Insert(request);
+
+
 
             return await Task.FromResult(new APIResponse
             {
@@ -36,6 +37,7 @@ namespace RoomService.Services
         {
             var rooms = await _roomRepository.GetAll();
             var roomList = new RoomListResponse();
+            // var currentUser = await _messageConsumer.ReceiveMessageAsync("GetCurrentUser");
             foreach (var room in rooms)
             {
                 roomList.Rooms.Add(new Room

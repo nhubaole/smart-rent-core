@@ -1,3 +1,5 @@
+using RabbitMQHandler.Services.Impls;
+using RabbitMQHandler.Services.Interfaces;
 using Calzolari.Grpc.AspNetCore.FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using UserService.Database;
@@ -15,6 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddGrpc(options => options.EnableMessageValidation());
 builder.Services.AddGrpcValidation();
 builder.Services.AddGrpc().AddJsonTranscoding();
+builder.Services.AddScoped<IMessageProducer, MessageProducer>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
