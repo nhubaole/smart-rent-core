@@ -26,8 +26,7 @@ namespace JwtAuthenticationManager
             var tokenKey = Encoding.UTF8.GetBytes(JWT_SERCURITY_KEY);
             var claimsIdentity = new ClaimsIdentity(new List<Claim>
             {
-
-                new Claim(JwtRegisteredClaimNames.Name, req.UserName)
+                new Claim(ClaimTypes.NameIdentifier, req.UserName)
 
             });
 

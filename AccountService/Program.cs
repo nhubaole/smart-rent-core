@@ -1,6 +1,8 @@
 using AccountService.Database;
 using JwtAuthenticationManager;
 using Microsoft.EntityFrameworkCore;
+using RabbitMQHandler.Services.Impls;
+using RabbitMQHandler.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<JwtTokenHandler>();
 builder.Services.AddDbContext<AccountDbContext>(
     opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("UserDatabase")));
+
+builder.Services.AddScoped<IMessageProducer, MessageProducer>();
 
 var app = builder.Build();
 

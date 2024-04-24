@@ -1,3 +1,5 @@
+using RabbitMQHandler.Services.Impls;
+using RabbitMQHandler.Services.Interfaces;
 using UserService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddGrpc();
 builder.Services.AddGrpc().AddJsonTranscoding();
-
+builder.Services.AddScoped<IMessageProducer, MessageProducer>();
 
 var app = builder.Build();
 

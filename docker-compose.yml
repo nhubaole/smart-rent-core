@@ -1,6 +1,20 @@
 version: '3.4'
 
 services:
+ 
+  rabbitmq:
+    image: rabbitmq:3.13.1-management
+    container_name: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=rabbitmq
+      - RABBITMQ_DEFAULT_PASS=rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+      
+    volumes:
+      - rabbitmq:/bitnami/rabbitmq/mnesia
+
   reviewservice:
     image: ${DOCKER_REGISTRY-}reviewservice
     build:
@@ -30,6 +44,8 @@ services:
       POSTGRES_USER: 'userdb'
       POSTGRES_PASSWORD: 'userdb'
       POSTGRES_DB: 'users'
+    volumes:
+      - postgresdb:/var/lib/postgresql/data_user/
     ports:
       - 5431:5432
 
@@ -58,6 +74,7 @@ services:
 
 volumes:
   postgresdb:
+  rabbitmq:
 
 
 
