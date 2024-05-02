@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-
 namespace RoomService.AutoMap
 
 {

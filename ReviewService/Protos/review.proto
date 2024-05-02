@@ -4,23 +4,52 @@ option csharp_namespace = "ReviewService";
 import "google/api/annotations.proto";
 package greet;
 
-// The greeting service definition.
 service ReviewService {
-  // Sends a greeting
-  rpc SayHello (HelloRequest) returns (HelloReply){
+
+  rpc Create (CreateReview) returns (Response){
 	  option(google.api.http) = {
 		  post: "/api/v1/reviews",
 		  body: "*"
 	  };
   }
+
+  rpc GetAllReview(GetByIdRes) returns (Response) {
+	  option(google.api.http) = {
+		  get: "/api/v1/reviews/{idRoom}"
+	  };
+  }
+
+
+
 }
 
-// The request message containing the user's name.
-message HelloRequest {
-  string name = 1;
+message Error{
+	string message = 1;
 }
 
-// The response message containing the greetings.
-message HelloReply {
-  string message = 1;
+message CreateReview {
+	int32 roomId = 1;
+	int32 userId = 2;
+	int32 invoiceId = 3;
+	string title = 4;
+	string content = 5;
+	double rating = 6;
+}
+
+message GetByIdRes {
+	int32 roomId = 1;
+}
+
+message ReviewListResponse {
+	repeated GetByIdRes reviews = 1;
+}
+
+message Response {
+	int32 statusCode = 1;
+	oneof result {
+		Error Error = 2;
+		CreateReview create_review_id = 3;
+		GetByIdRes review = 4;
+		ReviewListResponse reviews = 5;
+	}
 }

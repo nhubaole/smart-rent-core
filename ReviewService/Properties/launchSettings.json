@@ -18,6 +18,15 @@
       "useSSL": true,
       "httpPort": 6000,
       "sslPort": 6001
+    },
+    "WSL": {
+      "commandName": "WSL2",
+      "launchUrl": "https://localhost:7050",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://localhost:5047;https://localhost:7050"
+      },
+      "distributionName": ""
     }
   }
 }

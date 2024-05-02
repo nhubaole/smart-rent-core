@@ -61,6 +61,18 @@ services:
     ports:
       - 5432:5432
 
+  reviewdb:
+    image: postgres:latest
+    container_name: reviewdb
+    environment:
+      POSTGRES_USER: 'reviewdb'
+      POSTGRES_PASSWORD: 'reviewdb'
+      POSTGRES_DB: 'reviews'
+    volumes:
+      - postgresdb:/var/lib/postgresql/data/
+    ports:
+      - 5433:5432
+
   apigateway:
     image: ${DOCKER_REGISTRY-}apigateway
     build:
