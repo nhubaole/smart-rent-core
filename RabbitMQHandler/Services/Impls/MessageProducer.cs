@@ -18,7 +18,7 @@ namespace RabbitMQHandler.Services.Impls
                 VirtualHost = "/"
             };
             //string routingKey = "channel";
-            var conn = factory.CreateConnection();
+            using var conn = factory.CreateConnection();
             using var chanel = conn.CreateModel();
             chanel.QueueDeclare(routingKey, durable: true, exclusive: false,
                      autoDelete: false,

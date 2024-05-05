@@ -53,5 +53,6 @@ namespace JwtAuthenticationManager
                 AccessToken = token,
             };
         }
+
     }
 }

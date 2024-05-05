@@ -1,11 +1,9 @@
 ﻿using AccountService.Database;
-using AccountService.Model;
 using JwtAuthenticationManager;
 using JwtAuthenticationManager.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RabbitMQHandler.Services.Interfaces;
-using System.Security.Claims;
 
 namespace AccountService.Controllers
 {
@@ -32,24 +30,7 @@ namespace AccountService.Controllers
             }
             var authResponse = _jwtTokenHandler.GenerateToken(req, user);
             if (authResponse == null) { return Unauthorized(); }
-            _messageProducer.SendingMessage(user.UserName, "GetCurrentUser");
             return Ok(authResponse);
-        }
-
-        private Account? GetCurrentUser()
-        {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-
-            if (identity != null)
-            {
-                var userClaims = identity.Claims;
-
-                return new Account
-                {
-                    UserName = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value
-                };
-            }
-            return null;
         }
     }
 }

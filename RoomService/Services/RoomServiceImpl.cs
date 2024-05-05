@@ -22,9 +22,7 @@ namespace RoomService.Services
         public override async Task<APIResponse> Create(CreateRoomReq request, ServerCallContext context)
         {
             //var message = _messageConsumer.ReceiveMessage("GetCurrentUser");
-            var room = await _roomRepository.Insert(request);
-
-
+            var room = await _roomRepository.Insert(request, context);
 
             return await Task.FromResult(new APIResponse
             {

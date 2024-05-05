@@ -22,7 +22,6 @@ builder.Services.AddValidator<RoomValidator>();
 builder.Services.AddGrpc().AddJsonTranscoding();
 builder.Services.AddScoped<IMessageProducer, MessageProducer>();
 builder.Services.AddScoped<IMessageConsumer, MessageConsumer>();
-
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 
 builder.Services.AddAutoMapper(typeof(Program));
@@ -31,6 +30,7 @@ builder.Services.AddDbContext<RoomDbContext>(
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
 app.MapGrpcService<RoomServiceImpl>();
 app.ApplyMigration();
 app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");

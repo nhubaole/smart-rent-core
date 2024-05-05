@@ -1,13 +1,9 @@
 ﻿using AutoMapper;
-using Google.Api;
 using Grpc.Core;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RoomService.Database;
-using RoomService.Model;
+using RoomService.Helper;
 using RoomService.Repository.Interface;
-using System.Web.Mvc;
-using static Grpc.Core.Metadata;
 
 namespace RoomService.Repository.Impls
 {
@@ -52,12 +48,15 @@ namespace RoomService.Repository.Impls
             }
         }
 
-        public async Task<Model.Room> Insert(CreateRoomReq room)
+        public async Task<Model.Room> Insert(CreateRoomReq room, ServerCallContext context)
         {
+            var currentUserName = HttpContextExtension.GetCurrentUser(context);
             try
             {
                 var roomInsert = _mapper.Map<Model.Room>(room);
-                _roomDbContext.Rooms.Add(roomInsert);
+                roomInsert.CreatedBy = currentUserName;
+
+                await _roomDbContext.Rooms.AddAsync(roomInsert);
                 await _roomDbContext.SaveChangesAsync();
                 return roomInsert;
             }
