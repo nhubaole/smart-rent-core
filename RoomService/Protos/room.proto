@@ -13,7 +13,7 @@ service RoomService {
 	  };
   }
 
-  rpc GetAllRoom(Empty) returns (APIResponse){
+  rpc GetAllRoom(PagingReq) returns (APIResponse){
 	  option(google.api.http) = {
 		  get: "/api/v1/rooms"
 	  };
@@ -43,6 +43,11 @@ service RoomService {
 // Like room
 message LikeRoomreq{
 	int32 room_id = 1;
+}
+
+message PagingReq{
+	int32 page_index = 1;
+	int32 page_count = 2;
 }
 
 // Get All

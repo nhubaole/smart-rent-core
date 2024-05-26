@@ -31,9 +31,9 @@ namespace RoomService.Services
             });
 
         }
-        public override async Task<APIResponse> GetAllRoom(Empty empty, ServerCallContext context)
+        public override async Task<APIResponse> GetAllRoom(PagingReq req, ServerCallContext context)
         {
-            var rooms = await _roomRepository.GetAll();
+            var rooms = await _roomRepository.GetAll(req.PageIndex, req.PageCount);
             var roomList = new RoomListResponse();
             // var currentUser = await _messageConsumer.ReceiveMessageAsync("GetCurrentUser");
             foreach (var room in rooms)

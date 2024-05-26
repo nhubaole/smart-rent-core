@@ -1,4 +1,5 @@
 ﻿using Grpc.Core;
+using RoomService.Model;
 
 namespace RoomService.Repository.Interface
 {
@@ -8,6 +9,6 @@ namespace RoomService.Repository.Interface
         Task<Model.Room> Update(CreateRoomReq room, int id);
         Task<Model.Room> Delete(int id);
         Task<Model.Room> GetById(int id);
-        Task<List<Model.Room>> GetAll();
+        Task<PagingResponse<Model.Room>> GetAll(int index, int pageCount);
     }
 }

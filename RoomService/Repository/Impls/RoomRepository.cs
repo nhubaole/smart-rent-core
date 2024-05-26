@@ -3,6 +3,7 @@ using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using RoomService.Database;
 using RoomService.Helper;
+using RoomService.Model;
 using RoomService.Repository.Interface;
 
 namespace RoomService.Repository.Impls
@@ -17,12 +18,14 @@ namespace RoomService.Repository.Impls
             _mapper = mapper;
         }
 
-        public async Task<List<Model.Room>> GetAll()
+        public async Task<PagingResponse<Model.Room>> GetAll(int skip, int count)
         {
             try
             {
                 var rooms = await _roomDbContext.Rooms.ToListAsync();
-                return rooms;
+                PagingResponse<Model.Room> roomList = PagingResponse<Model.Room>.Paging(rooms, skip, count);
+
+                return roomList;
             }
             catch (Exception ex)
             {
