@@ -23,14 +23,14 @@
         }
       ],
       "UpstreamPathTemplate": "/api-gateway/v1/rooms/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      }
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
     },
     {
-      "DownstreamPathTemplate": "/api/v1/users",
+      "DownstreamPathTemplate": "/api/v1/users/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -38,8 +38,8 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/api-gateway/v1/users",
-      "UpstreamHttpMethod": [ "Get", "Post" ]
+      "UpstreamPathTemplate": "/api-gateway/v1/users/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
     },
     {
       "DownstreamPathTemplate": "/api/v1/reviews",
