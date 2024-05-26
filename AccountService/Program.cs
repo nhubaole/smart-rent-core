@@ -28,7 +28,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthorization();
-app.ApplyMigration();
+//app.ApplyMigration();
 
 app.MapControllers();
 

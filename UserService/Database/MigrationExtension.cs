@@ -1,13 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using UserService.Database;
 
-namespace AccountService.Database
+namespace RoomService.Database
 {
     public static class MigrationExtension
     {
         public static void ApplyMigration(this IApplicationBuilder app)
         {
             using IServiceScope scope = app.ApplicationServices.CreateScope();
-            using AccountDbContext dbContext = scope.ServiceProvider.GetRequiredService<AccountDbContext>();
+            using UserDbContext dbContext = scope.ServiceProvider.GetRequiredService<UserDbContext>();
             dbContext.Database.Migrate();
         }
     }
