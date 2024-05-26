@@ -10,5 +10,6 @@ namespace UserService.Database
         }
 
         public DbSet<Model.User> Users { get; set; }
+
     }
 }

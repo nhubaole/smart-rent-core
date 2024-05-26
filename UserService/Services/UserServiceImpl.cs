@@ -1,6 +1,5 @@
 using AutoMapper;
 using Grpc.Core;
-using UserService;
 using UserService.Repository;
 
 namespace UserService.Services
@@ -17,35 +16,122 @@ namespace UserService.Services
             _mapper = mapper;
         }
 
+        public override async Task<APIResponse> GetUserByUserName(GetUserByUserNameReq request, ServerCallContext context)
+        {
+            try
+            {
+                var user = await _userRepository.GetByUserName(request.UserName);
+                return new APIResponse
+                {
+                    StatusCode = 200,
+                    UserInfo = new GetUserByIdRes
+                    {
+                        UserName = user.UserName,
+                        FullName = user.FullName,
+                        Avatar = user.Avatar,
+                        Dob = user.DOB.ToString(),
+                        Email = user.Email,
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                return new APIResponse
+                {
+                    StatusCode = 500,
+                    Error = new Error
+                    {
+                        Message = ex.Message,
+                    },
+                };
+            }
+        }
+
+        public override async Task<APIResponse> CreateUser(CreateUserReq request, ServerCallContext context)
+        {
+            try
+            {
+                var user = await _userRepository.CreateUser(request);
+                return new APIResponse
+                {
+                    StatusCode = 200,
+                    UserIdCreate = new CreateUserRes
+                    {
+                        UserId = user.UserId
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                return new APIResponse
+                {
+                    StatusCode = 500,
+                    Error = new Error
+                    {
+                        Message = ex.Message,
+                    }
+                };
+            }
+        }
+
         public override async Task<APIResponse> GetUserById(GetUserByIdReq request, ServerCallContext context)
         {
-            var user = await _userRepository.GetById(request.Id);
-
-            return await Task.FromResult(new APIResponse
+            try
             {
-                StatusCode = 200,
-                UserInfo = new GetUserByIdRes { 
-                    UserName = user.UserName, 
-                    FullName = user.FullName,
-                    Avatar = user.Avatar, 
-                    Dob = user.DOB.ToString(), 
-                    Email = user.Email,  
-                }
-            });
+                var user = await _userRepository.GetById(request.Id);
+
+                return new APIResponse
+                {
+                    StatusCode = 200,
+                    UserInfo = new GetUserByIdRes
+                    {
+                        UserName = user.UserName,
+                        FullName = user.FullName,
+                        Avatar = user.Avatar,
+                        Dob = user.DOB.ToString(),
+                        Email = user.Email,
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                return new APIResponse
+                {
+                    StatusCode = 500,
+                    Error = new Error
+                    {
+                        Message = ex.Message,
+                    }
+                };
+            }
         }
 
         public override async Task<APIResponse> UpdateUserInfo(UpdateUserInfoReq request, ServerCallContext context)
         {
-            var user = await _userRepository.Update(request.UpdateUser, request.Id);
-
-            return await Task.FromResult(new APIResponse
+            try
             {
-                StatusCode = 200,
-                UserId = new UpdateUserInfoRes
+                var user = await _userRepository.Update(request.UpdateUser, request.Id);
+
+                return new APIResponse
                 {
-                    UserId = user.UserId,
-                }
-            }) ;
+                    StatusCode = 200,
+                    UserId = new UpdateUserInfoRes
+                    {
+                        UserId = user.UserId,
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                return new APIResponse
+                {
+                    StatusCode = 500,
+                    Error = new Error
+                    {
+                        Message = ex.Message,
+                    }
+                };
+            }
         }
 
     }

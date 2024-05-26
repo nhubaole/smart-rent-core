@@ -45,7 +45,7 @@ services:
       POSTGRES_PASSWORD: 'userdb'
       POSTGRES_DB: 'users'
     volumes:
-      - postgresdb:/var/lib/postgresql/data_user/
+      - userpostgresdb:/var/lib/postgresql/data_user/
     ports:
       - 5431:5432
 
@@ -74,6 +74,7 @@ services:
 
 volumes:
   postgresdb:
+  userpostgresdb:
   rabbitmq:
 
 
